@@ -16,11 +16,11 @@ class Engine
 		bool charger(const QString& file);
 		bool sauver(const QString& fileName);
 		enum { MAX_ORES = 10 };
-	
+
 	private:
 		Engine();
 		~Engine();
-		
+
 		static Engine* engine;
 		QList<Asteroid*> asteroids;
 		qint32 money;

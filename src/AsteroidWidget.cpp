@@ -49,24 +49,29 @@ void AsteroidWidget::setName(const QString& n)
 void AsteroidWidget::setAsteroid(const Asteroid* asteroid)
 {
 	const quint16* o = asteroid->getOres();
+
 	for(int i = 0; i < Engine::MAX_ORES; ++i)
 		ores[i]->setValue(o[i]);
+
 	maxOres->setValue(asteroid->getMaxOres());
 }
 
 void AsteroidWidget::valueChanged(int value)
 {
 	QSpinBox* W = qobject_cast<QSpinBox*>(sender());
+
 	if(W != maxOres)
 	{
 		int total = 0;
+
 		for(int i = 0; i < Engine::MAX_ORES; i++)
 		{
 			if(W == ores.at(i))
 				Engine::getInstance()->getAsteroid(key)->setOre(i, value);
+
 			total += ores.at(i)->value();
 		}
-	
+
 		totalOres->setText(QString::number(total));
 	}
 	else

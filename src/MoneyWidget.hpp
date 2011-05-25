@@ -5,7 +5,7 @@
 
 class MoneyWidget : public QGroupBox
 {
-	Q_OBJECT
+		Q_OBJECT
 
 	public:
 		MoneyWidget();
