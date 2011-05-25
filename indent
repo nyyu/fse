@@ -1,0 +1,4 @@
+#!/bin/sh
+
+astyle -A1SCTYfUpk1W0z2 src/*
+
