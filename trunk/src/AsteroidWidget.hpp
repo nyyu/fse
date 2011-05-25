@@ -6,7 +6,7 @@
 
 class AsteroidWidget : public QGroupBox
 {
-	Q_OBJECT
+		Q_OBJECT
 
 	public:
 		AsteroidWidget();
@@ -16,7 +16,7 @@ class AsteroidWidget : public QGroupBox
 	private slots:
 		void valueChanged(int value);
 		void textEdited(const QString& text);
-	
+
 	private:
 		QList<QSpinBox*> ores;
 		QSpinBox* maxOres;

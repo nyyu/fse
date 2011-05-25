@@ -6,6 +6,7 @@ Window* Window::getInstance()
 {
 	if(NULL == window)
 		window = new Window;
+
 	return window;
 }
 
@@ -16,11 +17,12 @@ void Window::kill()
 
 Window::Window()
 {
-	setAttribute(Qt::WA_DeleteOnClose);
+	//setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Fragile Save Editor"));
+	setWindowIcon(QIcon(":/fse.ico"));
 
 	(void)statusBar();
-	
+
 	QMenu* menuFile = menuBar()->addMenu(tr("&File"));
 	menuFile->addAction(tr("&Open..."), this, SLOT(open()), QKeySequence::Open);
 	saveAct = menuFile->addAction(tr("&Save"), this, SLOT(save()), QKeySequence::Save);
@@ -28,42 +30,44 @@ Window::Window()
 	saveAsAct = menuFile->addAction(tr("Save &As..."), this, SLOT(saveAs()), QKeySequence("Ctrl+Maj+S"));
 	saveAsAct->setDisabled(true);
 	separatorAct = menuFile->addSeparator();
-	for (int i = 0; i < MaxRecentFiles; ++i)
+
+	for(int i = 0; i < MaxRecentFiles; ++i)
 	{
 		recentFileActs[i] = new QAction(this);
 		recentFileActs[i]->setVisible(false);
 		connect(recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
 		menuFile->addAction(recentFileActs[i]);
 	}
+
 	updateRecentFileActions();
 	menuFile->addSeparator();
 	menuFile->addAction(tr("&Quit"), this, SLOT(quit()), QKeySequence("Ctrl+Q"));
-	
+
 	QMenu* menuEdit = menuBar()->addMenu(tr("&Edit"));
 	menuEdit->addAction(tr("&Find..."), this, SLOT(find()), QKeySequence::Find);
 	menuEdit->addAction(tr("Find &Next"), this, SLOT(findNext()), QKeySequence::FindNext);
-	
-	
+
+
 	QMenu* menuHelp = menuBar()->addMenu(tr("&Help"));
 	menuHelp->addAction(tr("&About"), this, SLOT(about()));
 	menuHelp->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
-	
+
 	standardModel = new QStandardItemModel;
 	treeView = new QTreeView;
 	treeView->setModel(standardModel);
 	treeView->header()->hide();
 	treeView->hide();
-	connect(treeView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(selectionChangedSlot()));
-	
+	connect(treeView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(selectionChangedSlot()));
+
 	moneyWidget = new MoneyWidget;
-	
+
 	asteroidWidget = new AsteroidWidget;
-	
+
 	QLayout* layout = new QHBoxLayout;
 	layout->addWidget(treeView);
 	layout->addWidget(moneyWidget);
 	layout->addWidget(asteroidWidget);
-	
+
 	QWidget* zoneCentrale = new QWidget;
 	zoneCentrale->setLayout(layout);
 	setCentralWidget(zoneCentrale);
@@ -118,6 +122,7 @@ void Window::find()
 void Window::findNext()
 {
 	iif++;
+
 	if(iif < itemsFound.size())
 		treeView->selectionModel()->setCurrentIndex(itemsFound.at(iif)->index(), QItemSelectionModel::SelectCurrent);
 	else
@@ -130,6 +135,7 @@ void Window::findNext()
 void Window::open()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, QString(), QDir::currentPath(), "SAVEGAME.*");
+
 	if(!fileName.isEmpty())
 		loadFile(fileName);
 }
@@ -137,6 +143,7 @@ void Window::open()
 void Window::loadFile(const QString& fileName)
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
+
 	if(engine->charger(fileName))
 	{
 		QString name = strippedName(fileName);
@@ -169,6 +176,7 @@ void Window::loadFile(const QString& fileName)
 	}
 	else
 		statusBar()->showMessage(tr("File is not a savegame"), 5000);
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -180,6 +188,7 @@ void Window::save()
 void Window::saveAs()
 {
 	QString fileName = QFileDialog::getSaveFileName(this, QString(), QDir::currentPath(), "SAVEGAME.*");
+
 	if(!fileName.isEmpty())
 		saveFile(fileName);
 }
@@ -187,11 +196,13 @@ void Window::saveAs()
 void Window::saveFile(const QString& fileName)
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
+
 	if(engine->sauver(fileName))
 	{
 		setCurrentFile(fileName);
 		statusBar()->showMessage(tr("File saved"), 5000);
 	}
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -201,12 +212,13 @@ void Window::selectionChangedSlot()
 	QString selectedText = index.data(Qt::DisplayRole).toString();
 	int hierarchyLevel = 1;
 	QModelIndex seekRoot = index;
+
 	while(seekRoot.parent() != QModelIndex())
 	{
 		seekRoot = seekRoot.parent();
 		hierarchyLevel++;
 	}
-	
+
 	if(hierarchyLevel == 1)
 	{
 		asteroidWidget->hide();
@@ -224,12 +236,13 @@ void Window::selectionChangedSlot()
 
 void Window::openRecentFile()
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	if (action)
+	QAction* action = qobject_cast<QAction*>(sender());
+
+	if(action)
 		loadFile(action->data().toString());
 }
 
-void Window::setCurrentFile(const QString &fileName)
+void Window::setCurrentFile(const QString& fileName)
 {
 	curFile = fileName;
 
@@ -237,14 +250,17 @@ void Window::setCurrentFile(const QString &fileName)
 	QStringList files = settings.value("recentFileList").toStringList();
 	files.removeAll(fileName);
 	files.prepend(fileName);
-	while (files.size() > MaxRecentFiles)
+
+	while(files.size() > MaxRecentFiles)
 		files.removeLast();
 
 	settings.setValue("recentFileList", files);
 
-	foreach (QWidget *widget, QApplication::topLevelWidgets()) {
-		Window *mainWin = qobject_cast<Window *>(widget);
-		if (mainWin)
+	foreach(QWidget * widget, QApplication::topLevelWidgets())
+	{
+		Window* mainWin = qobject_cast<Window*>(widget);
+
+		if(mainWin)
 			mainWin->updateRecentFileActions();
 	}
 }
@@ -256,19 +272,21 @@ void Window::updateRecentFileActions()
 
 	int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);
 
-	for (int i = 0; i < numRecentFiles; ++i) {
+	for(int i = 0; i < numRecentFiles; ++i)
+	{
 		QString text = tr("&%1 %2").arg(i + 1).arg(strippedName(files[i]));
 		recentFileActs[i]->setText(text);
 		recentFileActs[i]->setData(files[i]);
 		recentFileActs[i]->setVisible(true);
 	}
-	for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+
+	for(int j = numRecentFiles; j < MaxRecentFiles; ++j)
 		recentFileActs[j]->setVisible(false);
 
 	separatorAct->setVisible(numRecentFiles > 0);
 }
 
-QString Window::strippedName(const QString &fullFileName)
+QString Window::strippedName(const QString& fullFileName)
 {
 	return QFileInfo(fullFileName).fileName();
 }

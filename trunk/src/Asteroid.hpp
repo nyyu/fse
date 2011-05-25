@@ -14,7 +14,7 @@ class Asteroid
 		void setName(const QString& value);
 		void setOre(int i, quint16 value);
 		void setMaxOres(quint16 value);
-	
+
 	private:
 		QString name;
 		quint16* ores;

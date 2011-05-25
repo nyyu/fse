@@ -9,8 +9,8 @@
 
 class Window : public QMainWindow
 {
-	Q_OBJECT
-	
+		Q_OBJECT
+
 	public:
 		static Window* getInstance();
 		static void kill();
@@ -19,7 +19,7 @@ class Window : public QMainWindow
 
 	protected:
 		void closeEvent(QCloseEvent* event);
-	
+
 	private slots:
 		void open();
 		void save();
@@ -30,7 +30,7 @@ class Window : public QMainWindow
 		void selectionChangedSlot();
 		void quit();
 		void openRecentFile();
-	
+
 	private:
 		Window();
 		~Window();
@@ -46,7 +46,7 @@ class Window : public QMainWindow
 		QStandardItemModel* standardModel;
 		MoneyWidget* moneyWidget;
 		AsteroidWidget* asteroidWidget;
-		QList<QStandardItem *> itemsFound;
+		QList<QStandardItem*> itemsFound;
 		int iif;
 		QAction* saveAct;
 		QAction* saveAsAct;
