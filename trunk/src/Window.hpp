@@ -26,6 +26,7 @@ class Window : public QMainWindow
 		void saveAs();
 		void about();
 		void find();
+		void findNext();
 		void selectionChangedSlot();
 		void quit();
 		void openRecentFile();
@@ -45,6 +46,8 @@ class Window : public QMainWindow
 		QStandardItemModel* standardModel;
 		MoneyWidget* moneyWidget;
 		AsteroidWidget* asteroidWidget;
+		QList<QStandardItem *> itemsFound;
+		int iif;
 		QAction* saveAct;
 		QAction* saveAsAct;
 		QAction* separatorAct;

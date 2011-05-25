@@ -41,7 +41,7 @@ Window::Window()
 	
 	QMenu* menuEdit = menuBar()->addMenu(tr("&Edit"));
 	menuEdit->addAction(tr("&Find..."), this, SLOT(find()), QKeySequence::Find);
-	menuEdit->addAction(tr("Find &Next"), this, SLOT(find()), QKeySequence::FindNext);
+	menuEdit->addAction(tr("Find &Next"), this, SLOT(findNext()), QKeySequence::FindNext);
 	
 	
 	QMenu* menuHelp = menuBar()->addMenu(tr("&Help"));
@@ -104,14 +104,27 @@ void Window::quit()
 
 void Window::about()
 {
-	QMessageBox::about(this, tr("About"), tr("FSE © Valentin."));
+	QMessageBox::about(this, tr("Fragile Save Editor"), tr("FSE © Valentin."));
 }
 
 void Window::find()
 {
-	QString text = QInputDialog::getText(this, tr("Fragile Save Editor"), tr("Enter an asteroid name"));
-	qDebug() << standardModel->findItems(text, Qt::MatchContains);
-	//treeView->scrollTo(item->index());
+	QString text = QInputDialog::getText(this, tr("Fragile Save Editor"), tr("Enter an asteroid name:"));
+	itemsFound = standardModel->findItems(text, Qt::MatchRecursive | Qt::MatchContains);
+	iif = -1;
+	findNext();
+}
+
+void Window::findNext()
+{
+	iif++;
+	if(iif < itemsFound.size())
+		treeView->selectionModel()->setCurrentIndex(itemsFound.at(iif)->index(), QItemSelectionModel::SelectCurrent);
+	else
+	{
+		QMessageBox::information(this, tr("Fragile Save Editor"), tr("No match."));
+		itemsFound.clear();
+	}
 }
 
 void Window::open()
