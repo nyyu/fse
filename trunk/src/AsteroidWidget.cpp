@@ -64,7 +64,7 @@ void AsteroidWidget::valueChanged(int value)
 	{
 		int total = 0;
 
-		for(int i = 0; i < Engine::MAX_ORES; i++)
+		for(int i = 0; i < Engine::MAX_ORES; ++i)
 		{
 			if(W == ores.at(i))
 				Engine::getInstance()->getAsteroid(key)->setOre(i, value);
