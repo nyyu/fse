@@ -28,7 +28,6 @@ class Window : public QMainWindow
 		void find();
 		void findNext();
 		void selectionChangedSlot();
-		void quit();
 		void openRecentFile();
 
 	private:
