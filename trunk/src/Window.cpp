@@ -41,7 +41,7 @@ Window::Window()
 
 	updateRecentFileActions();
 	menuFile->addSeparator();
-	menuFile->addAction(tr("&Quit"), this, SLOT(quit()), QKeySequence("Ctrl+Q"));
+	menuFile->addAction(tr("&Quit"), this, SLOT(close()), QKeySequence("Ctrl+Q"));
 
 	QMenu* menuEdit = menuBar()->addMenu(tr("&Edit"));
 	menuEdit->addAction(tr("&Find..."), this, SLOT(find()), QKeySequence::Find);
@@ -93,17 +93,13 @@ QStandardItemModel* Window::getStandardModel()
 
 void Window::closeEvent(QCloseEvent* event)
 {
-	event->ignore();
-	quit();
-}
-
-void Window::quit()
-{
 	if(QMessageBox::question(this, tr("Fragile Save Editor"), tr("Are you sure you want to quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 	{
 		kill();
-		qApp->quit();
+		event->accept();
 	}
+	else
+		event->ignore();
 }
 
 void Window::about()

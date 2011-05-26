@@ -22,7 +22,9 @@ Engine::Engine()
 Engine::~Engine()
 {
 	foreach(Asteroid * asteroid, asteroids)
-	delete asteroid;
+	{
+		delete asteroid;
+	}
 	asteroids.clear();
 }
 
@@ -41,7 +43,9 @@ QStringList Engine::getAsteroidsNames()
 	QStringList names;
 
 	foreach(Asteroid * asteroid, asteroids)
-	names << asteroid->getName();
+	{
+		names << asteroid->getName();
+	}
 
 	return names;
 }
@@ -96,7 +100,6 @@ bool Engine::charger(const QString& fileName)
 
 		stream.skipRawData(0xC2);
 
-
 		asteroids << new Asteroid(QTextCodec::codecForName("CP850")->toUnicode(name), ores, maxOres);
 	}
 	while(true);
@@ -118,6 +121,7 @@ bool Engine::sauver(const QString& fileName)
 	stream.skipRawData(0xA4);
 	stream << money;
 	stream.skipRawData(0x35584);
+
 	foreach(Asteroid * asteroid, asteroids)
 	{
 		char name[0xF] = {0};
@@ -133,6 +137,7 @@ bool Engine::sauver(const QString& fileName)
 
 		stream.skipRawData(0xC2);
 	}
+
 	file.close();
 	return true;
 }
