@@ -1,7 +1,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "Engine.hpp"
 #include "MoneyWidget.hpp"

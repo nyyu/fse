@@ -1,7 +1,7 @@
 #ifndef MONEYWIDGET_HPP
 #define MONEYWIDGET_HPP
 
-#include <QtGui>
+#include <QtWidgets>
 
 class MoneyWidget : public QGroupBox
 {

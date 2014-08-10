@@ -1,7 +1,7 @@
 #ifndef ASTEROIDWIDGET_HPP
 #define ASTEROIDWIDGET_HPP
 
-#include <QtGui>
+#include <QtWidgets>
 #include "Asteroid.hpp"
 
 class AsteroidWidget : public QGroupBox
