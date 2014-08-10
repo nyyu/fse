@@ -9,6 +9,7 @@ RESOURCES = fse.qrc
 win32:RC_FILE = fse.rc
 
 PRECOMPILED_HEADER += src/pch.hpp
+QT += widgets
  
 HEADERS += src/Asteroid.hpp \
            src/AsteroidWidget.hpp \
