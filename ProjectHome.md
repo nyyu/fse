@@ -1,0 +1,1 @@
+Editor for save game of Fragile Allegiance
